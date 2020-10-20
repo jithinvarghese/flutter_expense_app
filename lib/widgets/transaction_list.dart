@@ -8,6 +8,7 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //context have metadata of widgets.
     return Container(
       height: 300,
       child: ListView.builder(
@@ -19,16 +20,17 @@ class TransactionList extends StatelessWidget {
                   margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                   decoration: BoxDecoration(
                       border: Border.all(
-                    color: Colors.orange[200],
+                    color: Theme.of(context).primaryColorLight,
                     width: 2,
                   )),
                   padding: EdgeInsets.all(5),
                   child: Text(
-                    '\$ ${transactions[index].amount.toString()}', //STRING INTEWRPOLOTION :compling the string the doller "$" is a recved caracter to give out put we can use "/""
+                    '\$ ${transactions[index].amount.toStringAsFixed(2)}', //STRING INTEWRPOLOTION :compling the string the doller "$" is a recved caracter to give out put we can use "/""
                     style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                        color: Colors.orange),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
                 ),
                 Column(
@@ -37,16 +39,18 @@ class TransactionList extends StatelessWidget {
                     Text(
                       transactions[index].title,
                       style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                          color: Colors.black87),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                        color: Theme.of(context).primaryColorDark,
+                      ),
                     ),
                     Text(
                       DateFormat.yMMMd().format(transactions[index].date),
                       style: TextStyle(
-                          fontWeight: FontWeight.w300,
-                          fontSize: 12,
-                          color: Colors.black87),
+                        fontWeight: FontWeight.w300,
+                        fontSize: 12,
+                        color: Theme.of(context).primaryColorDark,
+                      ),
                     ),
                   ],
                 )
