@@ -12,15 +12,29 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Expenses App',
       theme: ThemeData(
+          brightness: Brightness.light,
           primarySwatch: Colors.green,
           accentColor: Colors.amber,
+          errorColor: Colors.red[300],
           fontFamily: 'Quicksand',
+          textTheme: TextTheme(
+            headline1: TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 20.0,
+                fontWeight: FontWeight.w700),
+            headline6: TextStyle(fontFamily: 'OpenSans', fontSize: 18.0),
+            bodyText2: TextStyle(fontFamily: 'OpenSans', fontSize: 14.0),
+            button: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+          ),
           appBarTheme: AppBarTheme(
             textTheme: ThemeData.light().textTheme.copyWith(
-                    headline3: TextStyle(
-                  fontFamily: 'OpenSans',
-                  fontSize: 20,
-                )),
+                  headline1: TextStyle(
+                      fontFamily: 'OpenSans',
+                      fontSize: 25,
+                      color: Colors.white),
+                  headline6: TextStyle(fontFamily: 'OpenSans', fontSize: 22.0),
+                  bodyText2: TextStyle(fontFamily: 'OpenSans', fontSize: 14.0),
+                ),
           )), //global asses to the desing to the app it included text,input feild
       home: MyHomePage(),
     );
@@ -53,11 +67,12 @@ class _MyHomePageState extends State<MyHomePage> {
   // where  - > it will allow to run every funcation of item in the list and if the
   //funcation return true,it will give a list other wise it wont keep the list
 
-  void _addNewTransaction(String txTitle, double txAmount) {
+  void _addNewTransaction(
+      String txTitle, double txAmount, DateTime chosenDate) {
     final newTx = Transaction(
       title: txTitle,
       amount: txAmount,
-      date: DateTime.now(),
+      date: chosenDate,
       id: DateTime.now().toString(),
     );
 
@@ -73,10 +88,20 @@ class _MyHomePageState extends State<MyHomePage> {
         builder: (_) {
           return GestureDetector(
             onTap: () {}, //does nothing just catch
-            child: NewTransaction(_addNewTransaction),
+            child: NewTransaction(
+              _addNewTransaction,
+            ),
             behavior: HitTestBehavior.opaque, //
           );
         });
+  }
+
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransaction.removeWhere((tx) {
+        return tx.id == id;
+      });
+    });
   }
 
   @override
@@ -93,13 +118,13 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       //  SingleChildScrollView( // add SingleChildScrollView on the main body.it wont able to work inside.
       //   child
-      body: Container(
+      body: SingleChildScrollView(
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Chart(_recentTransactions),
-            TransactionList(_userTransaction),
+            TransactionList(_userTransaction, _deleteTransaction),
           ],
         ),
       ),
